@@ -4,8 +4,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/default_padding"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/go_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/button_padding"
+        android:text="@string/go"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/time_remaining_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorOrange"
+        android:padding="@dimen/text_view_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="30s" />
 
+    <TextView
+        android:id="@+id/task_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/text_view_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2 + 4" />
+
+    <TextView
+        android:id="@+id/score_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlue"
+        android:padding="@dimen/text_view_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="0/0" />
+
+    <GridLayout
+        android:id="@+id/solutions_grid_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_padding"
+        android:columnCount="2"
+        android:rowCount="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/time_remaining_text_view">
+
+        <TextView
+            android:id="@+id/solution_1_text_view"
+            android:background="@color/colorRed"
+            android:padding="@dimen/text_view_padding"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            tools:text="13" />
+
+        <TextView
+            android:id="@+id/solution_2_text_view"
+            android:background="@color/colorPurple"
+            android:padding="@dimen/text_view_padding"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            tools:text="13" />
+
+        <TextView
+            android:id="@+id/solution_3_text_view"
+            android:background="@color/colorBlue"
+            android:padding="@dimen/text_view_padding"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            tools:text="18" />
+
+        <TextView
+            android:id="@+id/solution_4_text_view"
+            android:background="@color/colorGreen"
+            android:padding="@dimen/text_view_padding"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            tools:text="12" />
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/evaluation_text_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/solutions_grid_view"
+        tools:text="@string/correct" />
+
+    <Button
+        android:id="@+id/play_again_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/play_again"
+        app:layout_constraintTop_toBottomOf="@id/evaluation_text_field">
+    </Button>
 </androidx.constraintlayout.widget.ConstraintLayout>
