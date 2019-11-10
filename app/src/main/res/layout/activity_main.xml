@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,12 +11,12 @@
         android:id="@+id/go_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="startGame"
         android:padding="@dimen/button_padding"
         android:text="@string/go"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textStyle="bold"
-        android:onClick="startGame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +24,12 @@
 
     <TextView
         android:id="@+id/time_remaining_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/score_width"
+        android:layout_height="@dimen/grid_item_size"
         android:background="@color/colorOrange"
-        android:padding="@dimen/text_view_padding"
+        android:paddingTop="@dimen/text_view_padding"
+        android:paddingBottom="@dimen/text_view_padding"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -47,14 +48,16 @@
 
     <TextView
         android:id="@+id/score_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/score_width"
+        android:layout_height="@dimen/grid_item_size"
         android:background="@color/colorBlue"
-        android:padding="@dimen/text_view_padding"
+        android:textAlignment="center"
+        android:paddingTop="@dimen/text_view_padding"
+        android:paddingBottom="@dimen/text_view_padding"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="0/0" />
+        tools:text="10/10" />
 
     <GridLayout
         android:id="@+id/solutions_grid_view"
@@ -72,38 +75,50 @@
             android:background="@color/colorRed"
             android:onClick="chooseSolution"
             android:padding="@dimen/text_view_padding"
+            android:tag="0"
+            android:layout_width="@dimen/grid_item_size"
+            android:layout_height="@dimen/grid_item_size"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
-            android:tag="0"
+            android:textAlignment="center"
             tools:text="13" />
 
         <TextView
             android:id="@+id/solution_2_text_view"
             android:background="@color/colorPurple"
-            android:padding="@dimen/text_view_padding"
-            android:textSize="@dimen/text_size_large"
             android:onClick="chooseSolution"
+            android:padding="@dimen/text_view_padding"
+            android:layout_width="@dimen/grid_item_size"
+            android:layout_height="@dimen/grid_item_size"
+            android:textAlignment="center"
             android:tag="1"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             tools:text="13" />
 
         <TextView
             android:id="@+id/solution_3_text_view"
             android:background="@color/colorBlue"
-            android:padding="@dimen/text_view_padding"
-            android:textSize="@dimen/text_size_large"
+            android:layout_width="@dimen/grid_item_size"
+            android:layout_height="@dimen/grid_item_size"
+            android:textAlignment="center"
             android:onClick="chooseSolution"
+            android:padding="@dimen/text_view_padding"
             android:tag="2"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             tools:text="18" />
 
         <TextView
             android:id="@+id/solution_4_text_view"
             android:background="@color/colorGreen"
-            android:padding="@dimen/text_view_padding"
             android:onClick="chooseSolution"
-            android:textSize="@dimen/text_size_large"
+            android:padding="@dimen/text_view_padding"
             android:tag="3"
+            android:layout_width="@dimen/grid_item_size"
+            android:textAlignment="center"
+            android:layout_height="@dimen/grid_item_size"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             tools:text="12" />
     </GridLayout>
@@ -122,10 +137,9 @@
         android:id="@+id/play_again_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/play_again"
         android:onClick="playAgain"
-        app:layout_constraintTop_toBottomOf="@id/evaluation_text_field">
-    </Button>
+        android:text="@string/play_again"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/evaluation_text_field"></Button>
 </androidx.constraintlayout.widget.ConstraintLayout>
