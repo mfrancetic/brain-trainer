@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
     private CountDownTimer timer;
 
+    private int successfulTasks = 0;
+
+    private int totalTasks = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public void startGame(View view) {
         showGame();
         startTimer();
+        updateScoreTextView(successfulTasks, totalTasks);
     }
 
     private void showGame() {
@@ -118,5 +123,10 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimer(int secondsLeft) {
         String timeRemaining = secondsLeft + getString(R.string.seconds);
         timeRemainingTextView.setText(timeRemaining);
+    }
+
+    private void updateScoreTextView(int successfulTasks, int totalTasks) {
+        String scoreText = successfulTasks + "/" + totalTasks;
+        scoreTextView.setText(scoreText);
     }
 }
