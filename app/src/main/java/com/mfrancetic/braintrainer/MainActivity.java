@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startGame(View view) {
+        evaluationTextView.setText("");
         resetCounters();
         showGame();
         updateTask(taskCounter);
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         scoreTextView.setVisibility(View.VISIBLE);
         timeRemainingTextView.setVisibility(View.VISIBLE);
         playAgainButton.setVisibility(View.INVISIBLE);
-        evaluationTextView.setVisibility(View.INVISIBLE);
+        evaluationTextView.setVisibility(View.VISIBLE);
         solutionGridView.setClickable(true);
     }
 
@@ -166,7 +167,10 @@ public class MainActivity extends AppCompatActivity {
     public void checkSolution(View view) {
         int chosenSolution = Integer.parseInt(view.getTag().toString());
         if (isSolutionCorrect(chosenSolution)) {
+            evaluationTextView.setText(getString(R.string.correct));
             successfulTasks++;
+        } else {
+            evaluationTextView.setText(getString(R.string.wrong));
         }
         totalTasks++;
         updateScoreTextView(successfulTasks, totalTasks);
