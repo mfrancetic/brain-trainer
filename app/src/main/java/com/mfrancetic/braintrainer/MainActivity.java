@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int totalTasks = 0;
 
+
     private int[][] tasksArray = {{2, 3}, {4, 5}, {7, 8}, {11, 5}, {3, 4},
             {9, 11}, {14, 16}, {1, 0}, {13, 19}, {12, 18},
             {33, 23}, {12, 2}, {1, 18}, {12, 33}, {4, 8}};
@@ -84,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startGame(View view) {
-        taskCounter = 0;
-        successfulTasks = 0;
-        totalTasks = 0;
+        resetCounters();
         showGame();
         updateTask(taskCounter);
         startTimer();
@@ -136,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
         evaluationTextView.setVisibility(View.VISIBLE);
         evaluationTextView.setText(getString(R.string.done));
         playAgainButton.setVisibility(View.VISIBLE);
-        timer.cancel();
         solutionGridView.setClickable(false);
+        timer.cancel();
     }
 
     private void updateTimer(int secondsLeft) {
@@ -152,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateTask(int taskNumber) {
         int[] task = tasksArray[taskNumber];
-        String taskText = task[0] + "+" + task[1];
+        String taskText = task[0] + " + " + task[1];
         taskTextView.setText(taskText);
     }
 
@@ -164,20 +163,43 @@ public class MainActivity extends AppCompatActivity {
         solutionFourTextView.setText(String.valueOf(solution[3]));
     }
 
-    public void chooseSolution(View view) {
+    public void checkSolution(View view) {
         int chosenSolution = Integer.parseInt(view.getTag().toString());
-        if (chosenSolution == solutionsArray[taskCounter]) {
+        if (isSolutionCorrect(chosenSolution)) {
             successfulTasks++;
         }
         totalTasks++;
         updateScoreTextView(successfulTasks, totalTasks);
-        if (taskCounter < (tasksArray.length -1)) {
-            taskCounter++;
-            updateTask(taskCounter);
-            updateSolutionsGrid(taskCounter);
+
+        if (areMoreTasksAvailable(taskCounter)) {
+            displayNextTask();
         } else {
-            Toast.makeText(this, getString(R.string.no_more_tasks), Toast.LENGTH_LONG).show();
-            displayGameOver();
+            displayNoMoreTasks();
         }
+    }
+
+    private void resetCounters() {
+        taskCounter = 0;
+        successfulTasks = 0;
+        totalTasks = 0;
+    }
+
+    private boolean areMoreTasksAvailable(int taskCounter) {
+        return taskCounter < (tasksArray.length - 1);
+    }
+
+    private void displayNextTask() {
+        taskCounter++;
+        updateTask(taskCounter);
+        updateSolutionsGrid(taskCounter);
+    }
+
+    private void displayNoMoreTasks() {
+        Toast.makeText(this, getString(R.string.no_more_tasks), Toast.LENGTH_LONG).show();
+        displayGameOver();
+    }
+
+    private boolean isSolutionCorrect(int chosenSolution) {
+        return chosenSolution == solutionsArray[taskCounter];
     }
 }
