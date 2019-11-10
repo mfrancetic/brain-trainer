@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +44,21 @@ public class MainActivity extends AppCompatActivity {
 
     private int totalTasks = 0;
 
+    private int[][] tasksArray = {{2, 3}, {4, 5}, {7, 8}, {11, 5}, {3, 4},
+            {9, 11}, {14, 16}, {1, 0}, {13, 19}, {12, 18},
+            {33, 23}, {12, 2}, {1, 18}, {12, 33}, {4, 8}};
+
+    private int[][] taskSolutionsArray = {{5, 8, 9, 10}, {1, 8, 9, 13}, {13, 15, 4, 12}, {21, 17, 15, 16}, {7, 11, 14, 13},
+            {22, 21, 30, 20}, {32, 40, 30, 18}, {2, 3, 1, 4}, {42, 22, 32, 52}, {20, 30, 26, 38},
+            {56, 54, 66, 64}, {16, 14, 22, 20}, {29, 20, 18, 19}, {42, 45, 35, 36}, {18, 14, 11, 12}
+    };
+
+    private int[] solutionsArray = {0, 2, 1, 3, 0,
+            3, 2, 2, 0, 1,
+            0, 1, 3, 1, 3};
+
+    private int taskCounter = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,14 +80,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void playAgain(View view) {
-        showGame();
-        startTimer();
+        startGame(view);
     }
 
     public void startGame(View view) {
+        taskCounter = 0;
+        successfulTasks = 0;
+        totalTasks = 0;
         showGame();
+        updateTask(taskCounter);
         startTimer();
         updateScoreTextView(successfulTasks, totalTasks);
+        updateSolutionsGrid(taskCounter);
     }
 
     private void showGame() {
@@ -93,11 +113,10 @@ public class MainActivity extends AppCompatActivity {
         timeRemainingTextView.setVisibility(View.INVISIBLE);
         playAgainButton.setVisibility(View.INVISIBLE);
         evaluationTextView.setVisibility(View.INVISIBLE);
-
     }
 
     private void startTimer() {
-         timer = new CountDownTimer(timeRemaining, timeInterval) {
+        timer = new CountDownTimer(timeRemaining, timeInterval) {
             @Override
             public void onTick(long millisecondsUntilDone) {
                 long millisecondsTillDoneLong = millisecondsUntilDone / 1000;
@@ -117,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         evaluationTextView.setVisibility(View.VISIBLE);
         evaluationTextView.setText(getString(R.string.done));
         playAgainButton.setVisibility(View.VISIBLE);
+        timer.cancel();
         solutionGridView.setClickable(false);
     }
 
@@ -128,5 +148,36 @@ public class MainActivity extends AppCompatActivity {
     private void updateScoreTextView(int successfulTasks, int totalTasks) {
         String scoreText = successfulTasks + "/" + totalTasks;
         scoreTextView.setText(scoreText);
+    }
+
+    private void updateTask(int taskNumber) {
+        int[] task = tasksArray[taskNumber];
+        String taskText = task[0] + "+" + task[1];
+        taskTextView.setText(taskText);
+    }
+
+    private void updateSolutionsGrid(int taskNumber) {
+        int[] solution = taskSolutionsArray[taskNumber];
+        solutionOneTextView.setText(String.valueOf(solution[0]));
+        solutionTwoTextView.setText(String.valueOf(solution[1]));
+        solutionThreeTextView.setText(String.valueOf(solution[2]));
+        solutionFourTextView.setText(String.valueOf(solution[3]));
+    }
+
+    public void chooseSolution(View view) {
+        int chosenSolution = Integer.parseInt(view.getTag().toString());
+        if (chosenSolution == solutionsArray[taskCounter]) {
+            successfulTasks++;
+        }
+        totalTasks++;
+        updateScoreTextView(successfulTasks, totalTasks);
+        if (taskCounter < (tasksArray.length -1)) {
+            taskCounter++;
+            updateTask(taskCounter);
+            updateSolutionsGrid(taskCounter);
+        } else {
+            Toast.makeText(this, getString(R.string.no_more_tasks), Toast.LENGTH_LONG).show();
+            displayGameOver();
+        }
     }
 }

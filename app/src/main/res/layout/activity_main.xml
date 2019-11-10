@@ -70,9 +70,11 @@
         <TextView
             android:id="@+id/solution_1_text_view"
             android:background="@color/colorRed"
+            android:onClick="chooseSolution"
             android:padding="@dimen/text_view_padding"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
+            android:tag="0"
             tools:text="13" />
 
         <TextView
@@ -80,6 +82,8 @@
             android:background="@color/colorPurple"
             android:padding="@dimen/text_view_padding"
             android:textSize="@dimen/text_size_large"
+            android:onClick="chooseSolution"
+            android:tag="1"
             android:textStyle="bold"
             tools:text="13" />
 
@@ -88,6 +92,8 @@
             android:background="@color/colorBlue"
             android:padding="@dimen/text_view_padding"
             android:textSize="@dimen/text_size_large"
+            android:onClick="chooseSolution"
+            android:tag="2"
             android:textStyle="bold"
             tools:text="18" />
 
@@ -95,7 +101,9 @@
             android:id="@+id/solution_4_text_view"
             android:background="@color/colorGreen"
             android:padding="@dimen/text_view_padding"
+            android:onClick="chooseSolution"
             android:textSize="@dimen/text_size_large"
+            android:tag="3"
             android:textStyle="bold"
             tools:text="12" />
     </GridLayout>
