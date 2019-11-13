@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,15 +28,15 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView evaluationTextView;
 
-    private TextView solutionOneTextView;
+    private TextView solution1TextView;
 
-    private TextView solutionTwoTextView;
+    private TextView solution2TextView;
 
-    private TextView solutionThreeTextView;
+    private TextView solution3TextView;
 
-    private TextView solutionFourTextView;
+    private TextView solution4TextView;
 
-    private long timeRemaining = 30000;
+    private long timeRemaining = 30100;
 
     private long timeInterval = 1000;
 
@@ -44,21 +46,25 @@ public class MainActivity extends AppCompatActivity {
 
     private int totalTasks = 0;
 
+    ArrayList<Integer> answers = new ArrayList<>();
 
-    private int[][] tasksArray = {{2, 3}, {4, 5}, {7, 8}, {11, 5}, {3, 4},
-            {9, 11}, {14, 16}, {1, 0}, {13, 19}, {12, 18},
-            {33, 23}, {12, 2}, {1, 18}, {12, 33}, {4, 8}};
+    private int randomNumberA;
 
-    private int[][] taskSolutionsArray = {{5, 8, 9, 10}, {1, 8, 9, 13}, {13, 15, 4, 12}, {21, 17, 15, 16}, {7, 11, 14, 13},
-            {22, 21, 30, 20}, {32, 40, 30, 18}, {2, 3, 1, 4}, {42, 22, 32, 52}, {20, 30, 26, 38},
-            {56, 54, 66, 64}, {16, 14, 22, 20}, {29, 20, 18, 19}, {42, 45, 35, 36}, {18, 14, 11, 12}
-    };
+    private int randomNumberB;
 
-    private int[] solutionsArray = {0, 2, 1, 3, 0,
-            3, 2, 2, 0, 1,
-            0, 1, 3, 1, 3};
+    private Random random;
 
-    private int taskCounter = 0;
+    private int locationOfCorrectAnswer;
+
+    private int wrongAnswer;
+
+    private int correctAnswer;
+
+    private int wrongAnswerBound = 41;
+
+    private int taskBound = 21;
+
+    private int answerLocationBound = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
         scoreTextView = findViewById(R.id.score_text_view);
         taskTextView = findViewById(R.id.task_text_view);
         solutionGridView = findViewById(R.id.solutions_grid_view);
-        solutionOneTextView = findViewById(R.id.solution_1_text_view);
-        solutionTwoTextView = findViewById(R.id.solution_2_text_view);
-        solutionThreeTextView = findViewById(R.id.solution_3_text_view);
-        solutionFourTextView = findViewById(R.id.solution_4_text_view);
+        solution1TextView = findViewById(R.id.solution_1_text_view);
+        solution2TextView = findViewById(R.id.solution_2_text_view);
+        solution3TextView = findViewById(R.id.solution_3_text_view);
+        solution4TextView = findViewById(R.id.solution_4_text_view);
         evaluationTextView = findViewById(R.id.evaluation_text_field);
 
         showGoButton();
@@ -88,10 +94,9 @@ public class MainActivity extends AppCompatActivity {
         evaluationTextView.setText("");
         resetCounters();
         showGame();
-        updateTask(taskCounter);
+        createNewTask();
         startTimer();
         updateScoreTextView(successfulTasks, totalTasks);
-        updateSolutionsGrid(taskCounter);
     }
 
     private void showGame() {
@@ -102,7 +107,10 @@ public class MainActivity extends AppCompatActivity {
         timeRemainingTextView.setVisibility(View.VISIBLE);
         playAgainButton.setVisibility(View.INVISIBLE);
         evaluationTextView.setVisibility(View.VISIBLE);
-        solutionGridView.setClickable(true);
+        solution1TextView.setClickable(true);
+        solution2TextView.setClickable(true);
+        solution3TextView.setClickable(true);
+        solution4TextView.setClickable(true);
     }
 
     private void showGoButton() {
@@ -119,8 +127,8 @@ public class MainActivity extends AppCompatActivity {
         timer = new CountDownTimer(timeRemaining, timeInterval) {
             @Override
             public void onTick(long millisecondsUntilDone) {
-                long millisecondsTillDoneLong = millisecondsUntilDone / 1000;
-                updateTimer((int) millisecondsTillDoneLong);
+                long secondsUntilDoneLong = millisecondsUntilDone / 1000;
+                updateTimer((int) secondsUntilDoneLong);
             }
 
             @Override
@@ -136,7 +144,10 @@ public class MainActivity extends AppCompatActivity {
         evaluationTextView.setVisibility(View.VISIBLE);
         evaluationTextView.setText(getString(R.string.done));
         playAgainButton.setVisibility(View.VISIBLE);
-        solutionGridView.setClickable(false);
+        solution1TextView.setClickable(false);
+        solution2TextView.setClickable(false);
+        solution3TextView.setClickable(false);
+        solution4TextView.setClickable(false);
         timer.cancel();
     }
 
@@ -150,18 +161,36 @@ public class MainActivity extends AppCompatActivity {
         scoreTextView.setText(scoreText);
     }
 
-    private void updateTask(int taskNumber) {
-        int[] task = tasksArray[taskNumber];
-        String taskText = task[0] + " + " + task[1];
+    private void createNewTask() {
+        answers.clear();
+        random = new Random();
+        randomNumberA = random.nextInt(taskBound);
+        randomNumberB = random.nextInt(taskBound);
+        String taskText = randomNumberA + " + " + randomNumberB;
         taskTextView.setText(taskText);
+
+        locationOfCorrectAnswer = random.nextInt(answerLocationBound);
+
+        for (int i = 0; i < 4; i++) {
+            if (i == locationOfCorrectAnswer) {
+                correctAnswer = getCorrectAnswer();
+                answers.add(correctAnswer);
+            } else {
+                wrongAnswer = random.nextInt(wrongAnswerBound);
+                while (wrongAnswer == randomNumberA + randomNumberB) {
+                    wrongAnswer = random.nextInt(wrongAnswerBound);
+                }
+                answers.add(wrongAnswer);
+            }
+        }
+        updateSolutionsGrid(answers);
     }
 
-    private void updateSolutionsGrid(int taskNumber) {
-        int[] solution = taskSolutionsArray[taskNumber];
-        solutionOneTextView.setText(String.valueOf(solution[0]));
-        solutionTwoTextView.setText(String.valueOf(solution[1]));
-        solutionThreeTextView.setText(String.valueOf(solution[2]));
-        solutionFourTextView.setText(String.valueOf(solution[3]));
+    private void updateSolutionsGrid(ArrayList<Integer> answers) {
+        solution1TextView.setText(String.valueOf(answers.get(0)));
+        solution2TextView.setText(String.valueOf(answers.get(1)));
+        solution3TextView.setText(String.valueOf(answers.get(2)));
+        solution4TextView.setText(String.valueOf(answers.get(3)));
     }
 
     public void checkSolution(View view) {
@@ -175,35 +204,19 @@ public class MainActivity extends AppCompatActivity {
         totalTasks++;
         updateScoreTextView(successfulTasks, totalTasks);
 
-        if (areMoreTasksAvailable(taskCounter)) {
-            displayNextTask();
-        } else {
-            displayNoMoreTasks();
-        }
+        createNewTask();
     }
 
     private void resetCounters() {
-        taskCounter = 0;
         successfulTasks = 0;
         totalTasks = 0;
     }
 
-    private boolean areMoreTasksAvailable(int taskCounter) {
-        return taskCounter < (tasksArray.length - 1);
-    }
-
-    private void displayNextTask() {
-        taskCounter++;
-        updateTask(taskCounter);
-        updateSolutionsGrid(taskCounter);
-    }
-
-    private void displayNoMoreTasks() {
-        Toast.makeText(this, getString(R.string.no_more_tasks), Toast.LENGTH_LONG).show();
-        displayGameOver();
-    }
-
     private boolean isSolutionCorrect(int chosenSolution) {
-        return chosenSolution == solutionsArray[taskCounter];
+        return chosenSolution == locationOfCorrectAnswer;
+    }
+
+    private int getCorrectAnswer() {
+        return randomNumberA + randomNumberB;
     }
 }
